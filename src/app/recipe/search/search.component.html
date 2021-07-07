@@ -1,0 +1,21 @@
+<div class="input-group">
+  <input
+    (input)="this.onChange($event)"
+    [formControl]="this.currentQuery"
+    type="text"
+    class="form-control"
+    placeholder="Start typing..."
+  />
+  <ng-container *ngIf="0 !== this.items.length || this.formVisible">
+    <span class="input-group-text bg-white">🔍</span>
+  </ng-container>
+  <ng-container *ngIf="0 === this.items.length && !this.formVisible">
+    <button
+      (click)="this.onAdd()"
+      class="btn btn-outline-primary"
+      type="button"
+    >
+      ➕
+    </button>
+  </ng-container>
+</div>

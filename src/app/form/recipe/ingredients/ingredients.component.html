@@ -1,0 +1,30 @@
+
+<div style="height: 86px;" class="d-flex flex-column justify-content-center">
+  <ng-container
+    *ngIf="0 === this.ingredients.controls.length"
+  >
+    <div class="w-100 h-100 text-muted text-center d-flex justify-content-center flex-column">
+      🥣 No ingredients added yet
+    </div>
+  </ng-container>
+
+  <div class="mb-3" style="white-space: nowrap; overflow-x: scroll">
+    <div
+      *ngFor="let ingredient of ingredients.controls; let i = index"
+      class="py-2 rounded bg-dark text-light d-inline-flex justify-content-between "
+      style="cursor: pointer; margin: 0 3px 0 0"
+    >
+      <div class="px-2 d-inline-block">
+        {{ ingredient.value.name }} {{ ingredient.value.amount }}{{ ingredient.value.unit }}
+      </div>
+      <div class="px-2">
+        <span
+          class="w-100 text-center"
+          (click)="this.removeIngredient(i)"
+        >
+          ❌
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

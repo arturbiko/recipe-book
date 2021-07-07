@@ -1,0 +1,69 @@
+<div class="form-group bg-light p-2 rounded">
+  <form [formGroup]="recipeForm">
+    <div class="mb-3">
+      <input type="text" class="form-control" placeholder="Dish..." formControlName="name"/>
+    </div>
+    <app-ingredients
+      [ingredients]="ingredients"
+    >
+    </app-ingredients>
+
+    <ul class="list-group mb-3">
+      <li class="list-group-item">
+        <div class="form-group row">
+          <div class="col-9">
+            <div class="row" formGroupName="ingredientMask">
+              <div class="col-12 mb-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Ingredient..."
+                  formControlName="name"
+                />
+              </div>
+              <div class="col-7">
+                <input
+                  type="text"
+                  class="form-control"
+                  min="0" max="100"
+                  formControlName="amount"
+                />
+              </div>
+              <div class="col-5">
+                <select
+                  class="form-control"
+                  formControlName="unit"
+                >
+                  <option>pc.</option>
+                  <option>g</option>
+                  <option>kg</option>
+                  <option>ml</option>
+                  <option>l</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-light h-100 w-100" (click)="this.addIngredient()">
+              ➕
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <button
+      class="btn btn-dark w-100 text-center mb-1"
+      [disabled]="0 === this.ingredients.controls.length"
+      type="submit"
+    >
+      Speichern
+    </button>
+    <button
+      type="button"
+      class="btn btn-light w-100 text-center"
+      (click)="this.onAbort()"
+    >
+      Abbrechen
+    </button>
+  </form>
+</div>

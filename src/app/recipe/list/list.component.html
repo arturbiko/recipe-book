@@ -1,0 +1,14 @@
+<div class="list-group">
+  <app-item
+    *ngFor="let recipe of this.items"
+    [item]="recipe"
+  >
+  </app-item>
+  <ng-container
+    *ngIf="0 === this.items.length"
+  >
+    <div class="w-100 h-100 text-muted text-center d-flex justify-content-center flex-column">
+      🥣 Nothing here. Add a recipe for you magic potion.
+    </div>
+  </ng-container>
+</div>
