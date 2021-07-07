@@ -3,8 +3,8 @@ import { Router } from "express";
 const express = require('express');
 const router: Router = express.Router();
 
-const nano = require('nano')('http://*:*@127.0.0.1:5984');
-const recipes = nano.db.use('recipe_book');
+const nano = require('nano')(process.env.DATABASE_URL);
+const recipes = nano.db.use(process.env.DATABASE_NAME);
 
 async function fetchAllRecipes() {
   return await recipes.partitionedView('recipe', 'recipes', 'all');

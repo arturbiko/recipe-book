@@ -20,7 +20,10 @@ app.use(express.json());
 
 app.use('/recipe/', recipeRouter);
 
-app.listen(4201, '127.0.0.1', function() {
+const port = process.env.SERVER_PORT!;
+const host = process.env.SERVER_HOST!;
+
+app.listen(parseInt(port), host, function() {
 
   console.log("Listening for connections");
 
