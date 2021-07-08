@@ -1,7 +1,15 @@
 <div class="form-group bg-light p-2 rounded">
-  <form [formGroup]="recipeForm">
+  <form [formGroup]="recipeForm" (ngSubmit)="this.onSubmit()">
     <div class="mb-3">
-      <input type="text" class="form-control" placeholder="Dish..." formControlName="name"/>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Dish..."
+        formControlName="name"
+        [ngClass]="{
+          'is-invalid': this.recipeForm.controls.name.invalid
+        }"
+      />
     </div>
     <app-ingredients
       [ingredients]="ingredients"
@@ -16,17 +24,22 @@
               <div class="col-12 mb-1">
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-control-warning"
                   placeholder="Ingredient..."
                   formControlName="name"
+                  [ngClass]="{
+                    'is-invalid': this.maskSubmitted && this.ingredientMask.controls.name.invalid
+                  }"
                 />
               </div>
               <div class="col-7">
                 <input
                   type="text"
                   class="form-control"
-                  min="0" max="100"
                   formControlName="amount"
+                  [ngClass]="{
+                    'is-invalid': this.maskSubmitted && this.ingredientMask.controls.amount.invalid
+                  }"
                 />
               </div>
               <div class="col-5">
@@ -44,7 +57,11 @@
             </div>
           </div>
           <div class="col-3">
-            <button class="btn btn-light h-100 w-100" (click)="this.addIngredient()">
+            <button
+              class="btn btn-light h-100 w-100"
+              (click)="this.addIngredient()"
+              type="button"
+            >
               ➕
             </button>
           </div>

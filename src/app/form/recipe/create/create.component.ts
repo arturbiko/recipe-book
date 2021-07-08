@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -10,7 +10,6 @@ import {
   Validators
 } from '@angular/forms';
 import isStringANumber from "is-string-a-number";
-import {Ingredient} from "../../../recipe/item/ingredient.model";
 
 @Component({
   selector: 'app-recipe-create',
@@ -21,7 +20,7 @@ export class CreateComponent implements OnInit {
 
   recipeForm!: FormGroup;
 
-  ingredient: Object;
+  maskSubmitted: boolean;
 
   @Input()
   recipeName!: string;
@@ -35,11 +34,7 @@ export class CreateComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder
   ) {
-    this.ingredient = {
-      name: '',
-      amount: '1',
-      unit: 'pc.'
-    }
+    this.maskSubmitted = false;
   }
 
   get ingredients(): FormArray {
@@ -59,10 +54,13 @@ export class CreateComponent implements OnInit {
       ingredients: this.formBuilder.array([]),
       ingredientMask: this.formBuilder.group({
         name: new FormControl('', [
-          Validators.required
+          Validators.required,
+          Validators.minLength(2)
         ]),
         amount: new FormControl('1', [
-          amountValidator()
+          amountValidator(),
+          Validators.min(0.1),
+          Validators.max(100)
         ]),
         unit: 'pc.',
       })
@@ -84,6 +82,12 @@ export class CreateComponent implements OnInit {
   }
 
   addIngredient() {
+    this.maskSubmitted = true;
+
+    if(this.ingredientMask.invalid) {
+      return;
+    }
+
     this.ingredients.push(this.formBuilder.group({
       name: this.ingredientMask.controls.name,
       amount: this.ingredientMask.controls.amount,
@@ -95,6 +99,8 @@ export class CreateComponent implements OnInit {
       amount: '1',
       unit: 'pc.'
     });
+
+    this.maskSubmitted = false;
   }
 }
 
