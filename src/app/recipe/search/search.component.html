@@ -14,6 +14,7 @@
       (click)="this.onAdd()"
       class="btn btn-outline-primary"
       type="button"
+      [disabled]="!this.currentQuery.value"
     >
       ➕
     </button>

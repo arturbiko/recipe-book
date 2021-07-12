@@ -10,6 +10,7 @@ import {
   Validators
 } from '@angular/forms';
 import isStringANumber from "is-string-a-number";
+import {ItemService} from "../../../recipe/item/item.service";
 
 @Component({
   selector: 'app-recipe-create',
@@ -32,7 +33,8 @@ export class CreateComponent implements OnInit {
   formClosedEvent = new EventEmitter();
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private itemService: ItemService
   ) {
     this.maskSubmitted = false;
   }
@@ -51,6 +53,7 @@ export class CreateComponent implements OnInit {
         Validators.required,
         Validators.minLength(2)
       ]),
+      description: new FormControl(''),
       ingredients: this.formBuilder.array([]),
       ingredientMask: this.formBuilder.group({
         name: new FormControl('', [
@@ -70,7 +73,7 @@ export class CreateComponent implements OnInit {
       .emit();
   }
 
-  onAbort(): void {
+  onClose(): void {
     this.recipeForm.reset();
 
     this.formClosedEvent
@@ -78,7 +81,10 @@ export class CreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-
+    this.itemService.addRecipe(this.recipeForm.value)
+      .subscribe(data => {
+        this.onClose();
+      });
   }
 
   addIngredient() {
@@ -88,10 +94,10 @@ export class CreateComponent implements OnInit {
       return;
     }
 
-    this.ingredients.push(this.formBuilder.group({
-      name: this.ingredientMask.controls.name,
-      amount: this.ingredientMask.controls.amount,
-      unit: this.ingredientMask.controls.unit
+    this.ingredients.controls.push(this.formBuilder.group({
+      name: this.ingredientMask.controls.name.value,
+      amount: this.ingredientMask.controls.amount.value,
+      unit: this.ingredientMask.controls.unit.value
     }));
 
     this.ingredientMask.reset({

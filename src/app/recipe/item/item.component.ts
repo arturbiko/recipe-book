@@ -17,4 +17,22 @@ export class ItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  get ingredients(): string {
+    let label = '';
+
+    label = this.item.value.ingredients
+      .map(i => i.name)
+      .slice(0, 3)
+      .join(", ");
+
+    if (this.item.value.ingredients.length > 3) {
+      label += "";
+    }
+
+    return label;
+  }
+
+  get likes(): string {
+    return this.item.value.likes.toString();
+  }
 }

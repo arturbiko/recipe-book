@@ -1,4 +1,6 @@
-import { Router } from "express";
+import {Router} from "express";
+import {RecipeModel} from "../../src/app/recipe/item/recipe.model";
+import {randomUUID} from "crypto";
 
 const express = require('express');
 const router: Router = express.Router();
@@ -16,6 +18,10 @@ async function searchBy(key: string, value: string) {
   });
 }
 
+async function addRecipe(recipe: RecipeModel) {
+  return await recipes.insert(recipe, `recipe:${randomUUID()}`);
+}
+
 router.get('/all', function (req, res) {
   fetchAllRecipes()
     .then(data => {
@@ -28,6 +34,26 @@ router.get('/find/:recipeName', function (req, res) {
     .then(data => {
       res.json(data.rows);
     });
+});
+
+router.post('/add', function (req, res) {
+  const data = req.body;
+
+  const recipe: RecipeModel = {
+    name: data.body.name,
+    description: data.body.description,
+    ingredients: data.body.ingredients,
+    likes: parseInt(data.body.likes)
+  }
+
+  addRecipe(recipe)
+    .then(data => res.json({
+      id: data.id,
+      ok: data.ok
+    }))
+    .catch(error => {
+      console.log(error)
+    })
 });
 
 export default router;

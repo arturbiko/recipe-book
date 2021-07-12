@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Item } from "./item.model";
+import {RecipeModel} from "./recipe.model";
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,14 @@ export class ItemService {
   constructor(
     private http: HttpClient
   ) {
+  }
+
+  addRecipe(recipe: RecipeModel): Observable<RecipeModel> {
+    const endpoint = `${this.endpoint}/add`;
+
+    return this.http.post<RecipeModel>(endpoint, {
+      body: recipe
+    });
   }
 
   fetchByQuery(query: string): Observable<Item[]> {
